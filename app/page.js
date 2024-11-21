@@ -20,8 +20,10 @@ export default function Home() {
             Flashcard SaaS
           </Typography>
           <SignedOut>
-            <Button color="inherit">Login</Button>
-            <Button color="inherit">Sign Up</Button>
+            <Button color="inherit" href="/sign-in">Login
+              
+            </Button>
+            <Button color="inherit" href="/sign-up">Sign Up</Button>
           </SignedOut>
           <SignedIn>
             <UserButton />
@@ -42,7 +44,7 @@ export default function Home() {
 
       {/* Features Section */}
       <Box sx={{ my: 6 }}>
-        <Typography variant="h4" sx={{ textAlign: "center", mb: 4 }}>
+        <Typography variant="h4" sx={{ textAlign: "center", mb: 4 }} gutterBottom>
           Features
         </Typography>
         <Grid container spacing={4}>
@@ -57,7 +59,7 @@ export default function Home() {
                 textAlign: "center",
               }}
             >
-              <Typography variant="h6">Easy Text Input</Typography>
+              <Typography variant="h6" gutterBottom>Easy Text Input</Typography>
               <Typography variant="body1">
                 Simply input your text and let our software do the rest. Creating flashcards has never been easier.
               </Typography>
@@ -75,7 +77,7 @@ export default function Home() {
                 textAlign: "center",
               }}
             >
-              <Typography variant="h6">Smart Flashcards</Typography>
+              <Typography variant="h6" gutterBottom>Smart Flashcards</Typography>
               <Typography variant="body1">
                 Our AI intelligently breaks down your text into concise flashcards for studying.
               </Typography>
@@ -93,7 +95,7 @@ export default function Home() {
                 textAlign: "center",
               }}
             >
-              <Typography variant="h6">Accessible Anywhere</Typography>
+              <Typography variant="h6" gutterBottom>Accessible Anywhere</Typography>
               <Typography variant="body1">
                 Access your flashcards from any device, at any time. Study on the go with ease.
               </Typography>
@@ -109,7 +111,7 @@ export default function Home() {
         </Typography>
         <Grid container spacing={4}>
           {/* Pricing Plan 1 */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <Box
               sx={{
                 p: 3,
@@ -119,13 +121,17 @@ export default function Home() {
                 textAlign: "center",
               }}
             >
-              <Typography variant="h6">Basic Plan</Typography>
-              <Typography variant="body1">Great for individuals starting out.</Typography>
+              <Typography variant="h5" gutterBottom>Basic</Typography>
+              <Typography variant="h6" gutterBottom >$5 / month</Typography>
+              <Typography variant="body1" gutterBottom>
+              Access to basic flashcard features and limited storage
+              </Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>Choose Basic</Button>             
             </Box>
           </Grid>
 
           {/* Pricing Plan 2 */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={6}>
             <Box
               sx={{
                 p: 3,
@@ -135,13 +141,17 @@ export default function Home() {
                 textAlign: "center",
               }}
             >
-              <Typography variant="h6">Pro Plan</Typography>
-              <Typography variant="body1">Advanced features for professionals.</Typography>
+              <Typography variant="h5" gutterBottom >Pro</Typography>
+              <Typography variant="h6" gutterBottom >$10 / month</Typography>
+              <Typography variant="body1" gutterBottom>Unlimited flashcarads and storagew with priority support</Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>Choose Pro</Button>             
+
             </Box>
           </Grid>
 
           {/* Pricing Plan 3 */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={12}  
+            >
             <Box
               sx={{
                 p: 3,
@@ -151,8 +161,11 @@ export default function Home() {
                 textAlign: "center",
               }}
             >
-              <Typography variant="h6">Enterprise Plan</Typography>
+              <Typography variant="h6" gutterBottom >Enterprise Plan</Typography>
+              <Typography variant="h6" gutterBottom >$10 / month</Typography>
               <Typography variant="body1">Custom plans for larger teams.</Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>Choose Enterprise</Button>             
+
             </Box>
           </Grid>
         </Grid>
