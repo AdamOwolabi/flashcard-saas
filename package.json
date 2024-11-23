@@ -1,11 +1,12 @@
 {
   "dependencies": {
-    "@clerk/nextjs": "^5.3.4",
+    "@clerk/nextjs": "^6.4.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
     "@google/generative-ai": "^0.17.1",
     "@mui/material": "^6.0.0",
     "@stripe/stripe-js": "^4.3.0",
+    "clerk": "^0.6.1",
     "firebase": "^10.13.0",
     "gemini-ai": "^2.2.1"
   },

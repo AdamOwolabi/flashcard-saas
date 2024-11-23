@@ -15,7 +15,7 @@ const firebaseConfig = {
   storageBucket: "flashcard-saas-c8371.appspot.com",
   messagingSenderId: "835393844551",
   appId: "1:835393844551:web:3d3e1fd123037c12330862",
-  measurementId: "G-WY3CXW8S3K"
+  measurementId: "G-WY3CXW8S3K",
 };
 
 // Initialize Firebase
@@ -23,12 +23,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Conditionally initialize Analytics (only on the client-side)
-if (typeof window !== 'undefined') {
-  isSupported().then((supported) => {
-    if (supported) {
-      const analytics = getAnalytics(app); // Only initialize analytics if supported and on client-side
-    }
-  });
-}
 
+  const analytics = getAnalytics(app); // Only initialize analytics if supported and on client-side
+  
 export{db}

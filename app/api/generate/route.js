@@ -4,30 +4,31 @@ import Gemini from "gemini-ai";
 const geminiai = new Gemini(process.env.GEMINI_API_KEY);
 
 
-const systemPrompt = 
-    `
-    You are a flashcard creator responsible for creating flashcards about whatever topics inputted.Your task is to generate concise and effective flashcards based on the given topic or content. Follow these guidelines:
-    1. Create clear and concise questions for the front of the flashcards.
-    2. Provide accurate and informative answers for the back of the flashcard.
-    3. Ensure that each flashcard focuses on a single concept or piece of information.
-    4. Use single language to make the flashcards accessible to a wide range of learners.
-    5. Include a variety of question types, such as definitions, examples comparisons and applications.
-    6. Avoid overly complex or ambiguous phrasing on both answers and questions. 
-    7. When appropriate, use mnemonics or memory aids to help reinforce the information. 
-    8. Tailor the difficulty level of the flashcards to the user's  specified preferences.
-    9. If given a body of text, extract the most important and relevant information for the flahscards.
-    10.  Aim to create a balanced set of flashcards that covers the topic comprehensively.
-    11. Only generate 10 flashcards.
-    remember, the goal is to facilitate effective learning and retention of information through these flashcards.
 
-    return in the following JSON format
-        {   
-            "flashcards": [{
-                "front": str,
-                "back": str
-                }]
-        }
-    `
+// const systemPrompt = 
+//     `
+//     You are a flashcard creator responsible for creating flashcards about whatever topics inputted.Your task is to generate concise and effective flashcards based on the given topic or content. Follow these guidelines:
+//     1. Create clear and concise questions for the front of the flashcards.
+//     2. Provide accurate and informative answers for the back of the flashcard.
+//     3. Ensure that each flashcard focuses on a single concept or piece of information.
+//     4. Use single language to make the flashcards accessible to a wide range of learners.
+//     5. Include a variety of question types, such as definitions, examples comparisons and applications.
+//     6. Avoid overly complex or ambiguous phrasing on both answers and questions. 
+//     7. When appropriate, use mnemonics or memory aids to help reinforce the information. 
+//     8. Tailor the difficulty level of the flashcards to the user's  specified preferences.
+//     9. If given a body of text, extract the most important and relevant information for the flahscards.
+//     10.  Aim to create a balanced set of flashcards that covers the topic comprehensively.
+//     11. Only generate 10 flashcards.
+//     remember, the goal is to facilitate effective learning and retention of information through these flashcards.
+
+//     return in the following JSON format
+//         {   
+//             "flashcards": [{
+//                 "front": str,
+//                 "back": str
+//                 }]
+//         }
+//     `
 
     export async function POST(req){
                 const systemPrompt = 
@@ -43,6 +44,7 @@ const systemPrompt =
             8. Tailor the difficulty level of the flashcards to the user's  specified preferences.
             9. If given a body of text, extract the most important and relevant information for the flahscards.
             10.  Aim to create a balanced set of flashcards that covers the topic comprehensively.
+            11. Only generate 10 flashcards.
 
             remember, the goal is to facilitate effective learning and retention of information through these flashcards.
 
@@ -54,25 +56,30 @@ const systemPrompt =
                         }]
                 }
             `
-
+        
         try{
+
             const data = await req.text();
-            const completion = await geminiai.createChat.completion.create(
+            const completion = await geminiai.chat.completion.create(
                 {
                     messages:[
                         {role: 'system', content: systemPrompt},
-                        {role: "user", content: data},
+                        {role: 'user', content: data},
                 ],
-               model: "Gemini 1.5 Flash",
-               response_format:{type:'json_object'}
+               model: 'Gemini 1.5 Flash',
+               response_format: {type:'json_object'} ,
             })
+
+            console.log(completion.choices[0].message.content)
     
             //parse the api request 
             const flashcards = JSON.parse(completion.choices[0].message.content)
-    
-            return NextResponse.json(flashcards.flashcard)  //make sure our resposne is always a json 
+            console.log(NextResponse.json(flashcards.flashcards))
+            return NextResponse.json(flashcards.flashcards)  //make sure our resposne is always a json 
         }catch(error){
-            return NextResponse.json({error: 'Failed to generate flashcards', deetails: error.message}, {satatus: 500});
+
+            //console.log("didn't get here", NextResponse.json(flashcards.flashcards))
+            return NextResponse.json({error: 'Failed to generate flashcards', details: error.message}, {satatus: 500});
         }
        
     }
