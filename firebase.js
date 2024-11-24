@@ -23,7 +23,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Conditionally initialize Analytics (only on the client-side)
+ // Only initialize analytics if supported and on client-side
 
-  const analytics = getAnalytics(app); // Only initialize analytics if supported and on client-side
-  
 export{db}
