@@ -6,6 +6,30 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { Box, AppBar, Container, Toolbar, Typography, Button, Grid } from "@mui/material";
 
 export default function Home() {
+  const handleSubmit = async () => {
+    //submit a nutton and get a checkout session
+
+    const checkoutSession = await fetch('/api/checkout_session', {
+      method: 'POST',
+      headers: {
+        origin: 'https://localhost:3000',
+      },
+    })
+
+    const checkoutSessionJson = await checkoutSession.json()
+      if (checkoutSession.statusCode == 500){
+        console.error(checkoutSession.message)
+      }
+
+      const stripe = await getStripe()
+      const {error} = await stripe.redirectToCheckout({
+        sessionId: checkoutSessionJson.id,
+      })
+
+      if(error){
+        console.warn(error.message)
+      }
+  }
   return (
     <Container maxWidth="100vw">
       <Head>
@@ -143,8 +167,11 @@ export default function Home() {
             >
               <Typography variant="h5" gutterBottom >Pro</Typography>
               <Typography variant="h6" gutterBottom >$10 / month</Typography>
-              <Typography variant="body1" gutterBottom>Unlimited flashcarads and storagew with priority support</Typography>
-              <Button variant="contained" color="primary" sx={{ mt: 2 }}>Choose Pro</Button>             
+              <Typography variant="body1" gutterBottom>
+                {' '}
+                Unlimited flashcarads and storagew with priority support</Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmit}>
+                Choose Pro</Button>             
 
             </Box>
           </Grid>
