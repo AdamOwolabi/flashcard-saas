@@ -4,7 +4,7 @@ import {Typography, Grid, Card, CardActionArea, CardContent, Container} from "@m
 import { useUser } from "@clerk/nextjs";
 import {use, useEffect, useState} from 'react'
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "@/firebase";
+import { db } from '../../firebase';
 import {useRouter} from 'next/navigation';
 
 

@@ -3,14 +3,21 @@
     "@clerk/nextjs": "^6.4.1",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@google/generative-ai": "^0.17.1",
+    "@google/generative-ai": "^0.17.2",
+    "@mui/icons-material": "^6.5.0",
     "@mui/material": "^6.0.0",
     "@stripe/stripe-js": "^4.3.0",
-    "clerk": "^0.6.1",
-    "firebase": "^10.13.0",
-    "gemini-ai": "^2.2.1"
+    "clerk": "^0.8.3",
+    "firebase": "^11.0.2",
+    "gemini-ai": "^2.2.1",
+    "next": "^14.2.31",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "stripe": "^17.4.0"
   },
   "scripts": {
-    "dev": "next dev"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   }
 }
