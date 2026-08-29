@@ -1,6 +1,11 @@
 import {NextResponse} from "next/server"
 import Stripe from 'stripe'
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY)
+
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('STRIPE_SECRET_KEY is not set in .env.local');
+}
 
 export async function GET(req)
   {
@@ -10,7 +15,8 @@ export async function GET(req)
       const checkoutSession = await stripe.checkout.sessions.retrieve(session_id)
       return NextResponse.json(checkoutSession)
     }catch(error){
-      console.log['Error retrieving checkout sessions:', error]
+      // CHANGELOG (2026-08-29): was `console.log[...]` (bracket indexing, a no-op) instead of a call
+      console.log('Error retrieving checkout sessions:', error)
       return NextResponse.json({error: {message: error.message}}, {status: 500})
     }
   }
@@ -18,15 +24,17 @@ export async function GET(req)
 const formatAmountForStripe = (amount)=>{
     return Math.round(amount * 100)
 }
+
 export async function POST(req){
-  const  headers = await req.headers(); 
+  const headers = req.headers; 
   const origin = headers.get('origin');
+
   if(!origin){
-    return NextResponse.json({error: 'Origin header is missing'}, {status: 400});
+    return NextResponse.json({error: "Origin header is missing"}, {status: 400});
   }
 
   if(!process.env.STRIPE_SECRET_KEY){
-    return NextResponse.json({error: 'Stripe secret key not configured' }, { status: 500 });
+    return NextResponse.json({error: "Stripe secret key not configured" }, { status: 500 });
   }
 
   

@@ -7,29 +7,36 @@ import { Box, AppBar, Container, Toolbar, Typography, Button, Grid } from "@mui/
 
 export default function Home() {
   const handleSubmit = async () => {
-    //submit a nutton and get a checkout session
+    try {
+      const checkoutSession = await fetch('/api/checkout_session', {
+        method: "POST",
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    const checkoutSession = await fetch('/api/checkout_session', {
-      method: 'POST',
-      headers: {
-        origin: 'https://localhost:3000',
-      },
-    })
-
-    const checkoutSessionJson = await checkoutSession.json()
-      if (checkoutSession.statusCode == 500){
-        console.error(checkoutSession.message)
+      if (!checkoutSession.ok) {
+        const errorText = await checkoutSession.text();
+        console.error('Server error:', errorText);
+        throw new Error(`Server error: ${checkoutSession.status}`);
       }
 
-      const stripe = await getStripe()
-      const {error} = await stripe.redirectToCheckout({
+      const checkoutSessionJson = await checkoutSession.json();
+      console.log('Checkout session JSON:', checkoutSessionJson);
+
+      const stripe = await getStripe();
+      const { error } = await stripe.redirectToCheckout({
         sessionId: checkoutSessionJson.id,
-      })
+      });
 
-      if(error){
-        console.warn(error.message)
+      if (error) {
+        console.warn(error.message);
       }
-  }
+    } catch (error) {
+      console.error('Failed to create checkout session:', error);
+    }
+  };
+
   return (
     <Container maxWidth="100vw">
       <Head>
@@ -44,9 +51,7 @@ export default function Home() {
             Flashcard SaaS
           </Typography>
           <SignedOut>
-            <Button color="inherit" href="/sign-in">Login
-              
-            </Button>
+            <Button color="inherit" href="/sign-in">Login</Button>
             <Button color="inherit" href="/sign-up">Sign Up</Button>
           </SignedOut>
           <SignedIn>
@@ -61,7 +66,7 @@ export default function Home() {
         <Typography variant="h5" sx={{ mt: 2 }}>
           The easiest way to create flashcards from scratch.
         </Typography>
-        <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+        <Button variant="contained" color="primary" sx={{mt: 2, mr: 2}} href="/generate">
           Get Started
         </Button>
       </Box>
@@ -148,7 +153,7 @@ export default function Home() {
               <Typography variant="h5" gutterBottom>Basic</Typography>
               <Typography variant="h6" gutterBottom >$5 / month</Typography>
               <Typography variant="body1" gutterBottom>
-              Access to basic flashcard features and limited storage
+                Access to basic flashcard features and limited storage
               </Typography>
               <Button variant="contained" color="primary" sx={{ mt: 2 }}>Choose Basic</Button>             
             </Box>
@@ -168,17 +173,16 @@ export default function Home() {
               <Typography variant="h5" gutterBottom >Pro</Typography>
               <Typography variant="h6" gutterBottom >$10 / month</Typography>
               <Typography variant="body1" gutterBottom>
-                {' '}
-                Unlimited flashcarads and storagew with priority support</Typography>
+                Unlimited flashcards and storage with priority support
+              </Typography>
               <Button variant="contained" color="primary" sx={{ mt: 2 }} onClick={handleSubmit}>
-                Choose Pro</Button>             
-
+                Choose Pro
+              </Button>             
             </Box>
           </Grid>
 
           {/* Pricing Plan 3 */}
-          <Grid item xs={12} md={12}  
-            >
+          <Grid item xs={12} md={12}>
             <Box
               sx={{
                 p: 3,
@@ -188,14 +192,29 @@ export default function Home() {
                 textAlign: "center",
               }}
             >
-              <Typography variant="h6" gutterBottom >Enterprise Plan</Typography>
-              <Typography variant="h6" gutterBottom >$10 / month</Typography>
-              <Typography variant="body1">Custom plans for larger teams.</Typography>
-              <Button variant="contained" color="primary" sx={{ mt: 2 }}>Choose Enterprise</Button>             
-
+              <Typography variant="h6" gutterBottom>Enterprise Plan</Typography>
+              <Typography variant="body1" gutterBottom>
+                Tailored plans for enterprise customers with custom features and integrations.
+              </Typography>
+              <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                Contact Us for Enterprise Plan
+              </Button>
             </Box>
           </Grid>
         </Grid>
+      </Box>
+
+      {/* Footer */}
+      <Box sx={{ mt: 6, py: 3, backgroundColor: "grey.200" }}>
+        <Container>
+          <Grid container justifyContent="center">
+            <Grid item xs={12} sm={4}>
+              <Typography variant="body1" sx={{ textAlign: "center" }}>
+                © 2024 Flashcard SaaS. All rights reserved.
+              </Typography>
+            </Grid>
+          </Grid>
+        </Container>
       </Box>
     </Container>
   );

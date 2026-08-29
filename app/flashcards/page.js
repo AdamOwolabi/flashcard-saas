@@ -1,10 +1,13 @@
 'use client'
+// CHANGELOG (2026-08-29): Fixed collection navigation — cards were routed with `flashcard.id`, but
+// saved collections only store a `name` field, so every click went to /flashcard?id=undefined and
+// showed an empty page. Now routes with `flashcard.name`, which is the Firestore subcollection key.
 
 import {Typography, Grid, Card, CardActionArea, CardContent, Container} from "@mui/material";
 import { useUser } from "@clerk/nextjs";
 import {use, useEffect, useState} from 'react'
 import { collection, CollectionReference, doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "@/firebase";
+import { db } from '../../firebase';
 import {useRouter} from 'next/navigation';
 
 
@@ -45,7 +48,7 @@ export default function Flashcards() {
             {flashcards.map((flashcard, index) => (
                 <Grid item xs={12} sm={6} md={4} key={index}>
                     <Card>
-                        <CardActionArea onClick={() => handleCardClick(flashcard.id)}>
+                        <CardActionArea onClick={() => handleCardClick(flashcard.name)}>
                             <CardContent>
                                 <Typography variant='h6'>
                                     {flashcard.name}
