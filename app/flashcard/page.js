@@ -8,7 +8,7 @@ import { useUser } from '@clerk/nextjs';
 import { Container, Typography, Box, Grid, Card, CardContent, CardActionArea } from '@mui/material';
 
 export default function Flashcard() {
-    const { isLoaded, isSignedIn, user } = useUser();
+    const {isLoaded, isSignedIn, user } = useUser();
     const [flashcards, setFlashcards] = useState([]);
     const [flipped, setFlipped] = useState([]);
 

@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Flashcard SaaS",
-  description: "Generate and amnage flashcarsds effortlessly",
+  description: "Generate and manage flashcards effortlessly",
 };
 
 export default function RootLayout({ children }) {
