@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { doc, collection, getDocs } from "firebase/firestore";
 import { db } from '../../firebase';
 import { useSearchParams } from 'next/navigation';
 import { useUser } from '@clerk/nextjs';
 import { Container, Typography, Box, Grid, Card, CardContent, CardActionArea } from '@mui/material';
 
-export default function Flashcard() {
+function FlashcardContent() {
     const {isLoaded, isSignedIn, user } = useUser();
     const [flashcards, setFlashcards] = useState([]);
     const [flipped, setFlipped] = useState([]);
@@ -111,5 +111,15 @@ export default function Flashcard() {
                 ))}
             </Grid>
         </Container>
+    );
+}
+
+// CHANGELOG (2026-08-30): Next 15 requires useSearchParams() to sit inside a <Suspense>
+// boundary — without it, `next build` fails prerendering /flashcard and breaks deploys.
+export default function Flashcard() {
+    return (
+        <Suspense fallback={<></>}>
+            <FlashcardContent />
+        </Suspense>
     );
 }
